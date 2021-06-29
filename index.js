@@ -22,9 +22,11 @@ mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const PORT = 4000
 
-app.use("/books", authMiddleware, bookRouter);
+app.use("/books", bookRouter);
 app.use("/user", userRouter);
 
 app.listen(PORT, () => {
     console.log("It is running");
 })
+
+module.exports = app;
