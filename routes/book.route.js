@@ -1,4 +1,5 @@
-const express = require("express")
+const express = require("express");
+const { authMiddleware } = require("../controllers/authMiddleware");
 const { createBook, getBooks, getBookById } = require("../controllers/book.controller")
 
 const bookRouter = express.Router();

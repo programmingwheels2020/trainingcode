@@ -4,8 +4,14 @@ const Book = require("../models/book.model");
 const createBook = async (req, res) => {
 
     try {
+
         console.log(req.body);
-        const book = new Book(req.body)
+        const book = new Book({
+            name: req.body.name,
+            author: req.body.author,
+            language: req.body.language,
+            createdBy: req.userId
+        })
         let result = await book.save();
         res.json({ data: result })
     } catch (err) {
