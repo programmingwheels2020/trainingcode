@@ -8,7 +8,28 @@ const { authMiddleware } = require("./controllers/authMiddleware");
 const morgan = require("morgan");
 const logger = require("./config/logger");
 const helmet = require("helmet");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require('swagger-ui-express');
 const cors = require("cors");
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Verizon Book App',
+            version: '1.0.0',
+            desciption: "This is simple CRUD BOOK api",
+            license: {
+                name: "MIT"
+            }
+        }
+    },
+    apis: ['./routes/*.js'],
+};
+
+const openapiSpecification = swaggerJsdoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+
 
 app.use(helmet());
 
