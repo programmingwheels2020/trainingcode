@@ -5,6 +5,14 @@ const bodyParser = require("body-parser")
 const bookRouter = require("./routes/book.route");
 const userRouter = require("./routes/user.route");
 const { authMiddleware } = require("./controllers/authMiddleware");
+const morgan = require("morgan");
+const logger = require("./config/logger");
+const helmet = require("helmet");
+const cors = require("cors");
+
+app.use(helmet());
+
+app.use(cors());
 
 // parse application/x - www - form - urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -13,6 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(express.static("public"));
 app.use(bodyParser.json())
+
+
+app.use(morgan('common', { stream: logger.stream }));
 
 
 const MONGO_URL = 'mongodb://localhost:27017/book'
@@ -24,6 +35,12 @@ const PORT = 4000
 
 app.use("/books", bookRouter);
 app.use("/user", userRouter);
+//error handler
+app.use((err, req, res, next) => {
+    console.log("--------------------------")
+    console.log(err);
+    res.status(400).json({ errMsg: err.message })
+})
 
 app.listen(PORT, () => {
     console.log("It is running");
